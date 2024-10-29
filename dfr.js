@@ -27,10 +27,26 @@ console.log(validNumber("three")); // → false (not a number)
 
 
 
-function dataDimensions(dataframe) {
+function dataDimensions(data) {
+  // Check if data is undefined or null
+  if (data === undefined || data === null) {
+    return [-1, -1];
+  }
 
+  if (typeof data === 'object' && typeof data.length === 'number'){
+    if (data[0] && typeof data[0] === 'object' && 'length' in data[0]) {
+      const rows = data.length;
+      const columns = data[0].length;
+      return [rows, columns];
+    } else {
+      // It's a 1D array (dataset)
+      return [data.length, -1];
+    }
+  }
+
+  // If not an array, return [-1, -1]
+  return [-1, -1];
 }
-
 function findTotal(dataset) {
   
 }
