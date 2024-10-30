@@ -28,7 +28,6 @@ console.log(validNumber("three")); // → false (not a number)
 
 
 function dataDimensions(data) {
-  // Check if data is undefined or null
   if (data === undefined || data === null) {
     return [-1, -1];
   }
@@ -39,17 +38,64 @@ function dataDimensions(data) {
       const columns = data[0].length;
       return [rows, columns];
     } else {
-      // It's a 1D array (dataset)
       return [data.length, -1];
     }
   }
-
-  // If not an array, return [-1, -1]
   return [-1, -1];
 }
-function findTotal(dataset) {
-  
+
+/*function findTotal(dataset) {
+  if (typeof dataset !== 'object'){
+    return false;
+  }
+
+  let total = 0;
+  const firstRow = dataset[0] && dataset[0].length;
+  for (let i = 0; i < dataset.length; i++){
+    const row = dataset[i];
+
+    if (row.length !== firstRow) {
+      return false
+    }
+    for (let j = 0; j<row.length; j++){
+      const element = row[j];
+      if (typeof element === 'number' && !isNaN(element)) {
+        total += element;
+      } 
+      else {
+        return false;
+    }
+  }  
 }
+return total;
+}*/
+
+function findTotal(dataset) {
+  let total = 0;
+  
+  if(dataset !== dataset || dataset.length === 0)
+    return 0;
+
+  for (let i = 0; i < dataset.length; i++) {
+    const item = dataset[i];
+
+    if (validNumber(item)) {
+      total += parseFloat(item);
+    }
+  }
+
+  return total;
+}
+//testing
+const [dataframe, totalRows, totalColumns] = loadCSV('path/to/your/csvfile.csv', [0], [0, 2]);
+console.log("Dataframe:", dataframe);
+console.log("Total Rows:", totalRows);
+console.log("Total Columns:", totalColumns);
+
+
+const salesFigures = [1500.5, 1900.25, "2000.00", 1750.75];
+console.log(calculateMean(salesFigures))
+
 
 function calculateMean(dataset) {
   
@@ -67,8 +113,8 @@ function flatten(dataframe) {
 
 }
 
-function loadCSV(csvFile, ignoreRows, ignoreCols) {
-
+function loadCSV(csvFile, ignoreRows = [], ignoreCols = []) {
+  
 }
 
 
