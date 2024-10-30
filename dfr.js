@@ -15,17 +15,6 @@ function validNumber(value) {
 
   else return false;
 }
-//validation tests
-console.log(validNumber("0.1")); // → true
-console.log(validNumber("-1.12")); // → true
-console.log(validNumber(5)); // → true
-console.log(validNumber(-10)); // → true
-console.log(validNumber("5.")); // → false (decimal point must be followed by digits)
-console.log(validNumber("+5")); // → false (explicit plus sign not allowed)
-console.log(validNumber("0.0.1")); // → false (multiple decimal points)
-console.log(validNumber("three")); // → false (not a number)
-
-
 
 function dataDimensions(data) {
   if (data === undefined || data === null) {
@@ -91,7 +80,6 @@ function calculateMean(dataset) {
     }
   }
 
-  // Uses a conditional statment to either output the mean or 0 
   return count > 0 ? sum / count : 0;
 }
 
