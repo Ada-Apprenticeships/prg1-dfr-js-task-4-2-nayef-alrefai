@@ -44,32 +44,6 @@ function dataDimensions(data) {
   return [-1, -1];
 }
 
-/*function findTotal(dataset) {
-  if (typeof dataset !== 'object'){
-    return false;
-  }
-
-  let total = 0;
-  const firstRow = dataset[0] && dataset[0].length;
-  for (let i = 0; i < dataset.length; i++){
-    const row = dataset[i];
-
-    if (row.length !== firstRow) {
-      return false
-    }
-    for (let j = 0; j<row.length; j++){
-      const element = row[j];
-      if (typeof element === 'number' && !isNaN(element)) {
-        total += element;
-      } 
-      else {
-        return false;
-    }
-  }  
-}
-return total;
-}*/
-
 function findTotal(dataset) {
   let total = 0;
   
@@ -87,18 +61,38 @@ function findTotal(dataset) {
   return total;
 }
 //testing
-const [dataframe, totalRows, totalColumns] = loadCSV('path/to/your/csvfile.csv', [0], [0, 2]);
-console.log("Dataframe:", dataframe);
-console.log("Total Rows:", totalRows);
-console.log("Total Columns:", totalColumns);
+const dataset1 = ["10", "20.5", "5"];        // Valid numbers as strings
+const dataset2 = [10, 20, 5];                // Valid numbers as numbers
+const dataset3 = ["10", "abc", "30.5"];      // Mixed with invalid strings
+const dataset4 = [10, "15.5", null, 5, ""];  // Mixed with non-numeric types
+const dataset5 = [];                         // Empty array
+const dataset6 = [["10", "20"], ["5"]];      // Array with sub-arrays (should return 0)
+
+console.log(findTotal(dataset1)); // Expected: 35.5
+console.log(findTotal(dataset2)); // Expected: 35
+console.log(findTotal(dataset3)); // Expected: 40.5 (ignores "abc")
+console.log(findTotal(dataset4)); // Expected: 30.5 (ignores null and empty string)
+console.log(findTotal(dataset5)); // Expected: 0 (empty array)
+console.log(findTotal(dataset6)); // Expected: 0 (contains sub-arrays)
 
 
 const salesFigures = [1500.5, 1900.25, "2000.00", 1750.75];
 console.log(calculateMean(salesFigures))
-
+//end of test
 
 function calculateMean(dataset) {
-  
+  let sum = 0;
+  let count = 0;
+
+  for (const element of dataset) {
+    if (validNumber(element)) {
+      sum = sum + Number(element); 
+      count++;
+    }
+  }
+
+  // Uses a conditional statment to either output the mean or 0 
+  return count > 0 ? sum / count : 0;
 }
 
 function calculateMedian(dataset) {
@@ -113,12 +107,7 @@ function flatten(dataframe) {
 
 }
 
-function loadCSV(csvFile, ignoreRows = [], ignoreCols = []) {
-  
-}
-
-
-function createSlice(dataframe, columnIndex, pattern, exportColumns = []) {
+function loadCSV(csvFile, ignoreRows, ignoreCols) {
 
 }
 
@@ -132,5 +121,5 @@ module.exports = {
   flatten,
   loadCSV,
   calculateMedian,
-  createSlice,
+  //createSlice,
 };
