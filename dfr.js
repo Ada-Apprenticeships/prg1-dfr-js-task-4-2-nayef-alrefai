@@ -119,6 +119,28 @@ function flatten(dataframe) {
   else return [];
 }
 
+function createSlice(dataframe, columnIndex, colpattern, exportColumns = []) {
+  if (!Array.isArray(dataframe) || !Array.isArray(dataframe[0])) {
+    return [];
+  }
+  
+  const slicedData = []; 
+
+  for (let i = 0; i < dataframe.length; i++) {
+    const row = dataframe[i];
+
+    const matchesPattern = colpattern === '*' || row[columnIndex] === colpattern;
+
+    if (matchesPattern) {
+      const selectedColumns = exportColumns.length > 0 ? exportColumns.map(index => row[index]).filter(val => val !== undefined)   : row; 
+
+      slicedData.push(selectedColumns);
+    }
+  }
+
+  return slicedData;
+}
+
 function loadCSV(csvFile, ignoreRows = [], ignoreCols = []) {
   let dataframe = [];
   let totalRows = 0;
@@ -134,10 +156,8 @@ function loadCSV(csvFile, ignoreRows = [], ignoreCols = []) {
 
       const columns = rows[i].split(',');
       
-      // Skip empty rows
       if (columns.length === 1 && columns[0].trim() === '') continue;
-
-      // Filter out ignored columns 
+ 
       const newRow = [];
       for (let j = 0; j < columns.length; j++) {
         if (!ignoreCols.includes(j)) {
@@ -145,13 +165,11 @@ function loadCSV(csvFile, ignoreRows = [], ignoreCols = []) {
         }
       }
 
-      // Update totalColumns based on the first valid row
       if (totalColumns === 0 && newRow.length > 0) {
         totalColumns = newRow.length;
       }
 
-      // Add the new row to the dataframe
-      if (newRow.length > 0) { // Ensure we only add non-empty rows
+      if (newRow.length > 0) { 
         dataframe.push(newRow);
       }
     }
@@ -162,9 +180,6 @@ function loadCSV(csvFile, ignoreRows = [], ignoreCols = []) {
 
   return [dataframe, totalRows, totalColumns];
 }
-
-
-function createSlice(dataframe, columnindex, pattern, exportColumn){}
 
 module.exports = {
   fileExists,
