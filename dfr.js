@@ -49,25 +49,6 @@ function findTotal(dataset) {
 
   return total;
 }
-//testing
-const dataset1 = ["10", "20.5", "5"];        // Valid numbers as strings
-const dataset2 = [10, 20, 5];                // Valid numbers as numbers
-const dataset3 = ["10", "abc", "30.5"];      // Mixed with invalid strings
-const dataset4 = [10, "15.5", null, 5, ""];  // Mixed with non-numeric types
-const dataset5 = [];                         // Empty array
-const dataset6 = [["10", "20"], ["5"]];      // Array with sub-arrays (should return 0)
-
-console.log(findTotal(dataset1)); // Expected: 35.5
-console.log(findTotal(dataset2)); // Expected: 35
-console.log(findTotal(dataset3)); // Expected: 40.5 (ignores "abc")
-console.log(findTotal(dataset4)); // Expected: 30.5 (ignores null and empty string)
-console.log(findTotal(dataset5)); // Expected: 0 (empty array)
-console.log(findTotal(dataset6)); // Expected: 0 (contains sub-arrays)
-
-
-const salesFigures = [1500.5, 1900.25, "2000.00", 1750.75];
-console.log(calculateMean(salesFigures))
-//end of test
 
 function calculateMean(dataset) {
   let sum = 0;
@@ -107,8 +88,19 @@ function calculateMedian(dataset) {
   return validNumbers.length % 2 !== 0 ? validNumbers[(validNumbers.length -1) / 2]: (validNumbers[middle - 1] + validNumbers[middle])/2;
 }
 
-function convertToNumber(dataframe, col) {
+function convertToNumber(dataframe, col) { 
+  let conversionCount = 0;
 
+  for (let row of dataframe) {
+    let cellValue = row[col];
+
+    // Check if cellValue is a numeric string
+    if (typeof cellValue === 'string' && /^-?\d+(\.\d+)?$/.test(cellValue)) {
+      row[col] = parseFloat(cellValue);  
+      conversionCount++;
+    }
+  } 
+  return conversionCount;
 }
 
 function flatten(dataframe) {
