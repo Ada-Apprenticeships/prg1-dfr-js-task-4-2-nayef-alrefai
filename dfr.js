@@ -116,12 +116,53 @@ function flatten(dataframe) {
     return values;
   }
 
-  return [];
+  else return [];
 }
 
 function loadCSV(csvFile, ignoreRows = [], ignoreCols = []) {
-  
+  let dataframe = [];
+  let totalRows = 0;
+  let totalColumns = 0;
+
+  try {
+    const fileContents = fs.readFileSync(csvFile, 'utf8');
+    const rows = fileContents.split('\n');
+    totalRows = rows.length;
+
+    for (let i = 0; i < rows.length; i++) {
+      if (ignoreRows.includes(i)) continue;
+
+      const columns = rows[i].split(',');
+      
+      // Skip empty rows
+      if (columns.length === 1 && columns[0].trim() === '') continue;
+
+      // Filter out ignored columns 
+      const newRow = [];
+      for (let j = 0; j < columns.length; j++) {
+        if (!ignoreCols.includes(j)) {
+          newRow.push(columns[j].trim());
+        }
+      }
+
+      // Update totalColumns based on the first valid row
+      if (totalColumns === 0 && newRow.length > 0) {
+        totalColumns = newRow.length;
+      }
+
+      // Add the new row to the dataframe
+      if (newRow.length > 0) { // Ensure we only add non-empty rows
+        dataframe.push(newRow);
+      }
+    }
+  } catch (error) {
+    console.error("Error reading the CSV file:", error);
+    return [[], -1, -1];
+  }
+
+  return [dataframe, totalRows, totalColumns];
 }
+
 
 function createSlice(dataframe, columnindex, pattern, exportColumn){}
 
