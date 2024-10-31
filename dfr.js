@@ -104,12 +104,26 @@ function convertToNumber(dataframe, col) {
 }
 
 function flatten(dataframe) {
+  const firstRow = dataframe[0];
+  const columnName = Object.keys(firstRow)[0];
 
+  if (columnName && Object.keys(firstRow).length === 1) {
+    const values = [];
+
+    for (let i = 0; i < dataframe.length; i++) {
+      values.push(dataframe[i][columnName]);
+    }
+    return values;
+  }
+
+  return [];
 }
 
-function loadCSV(csvFile, ignoreRows, ignoreCols) {
-
+function loadCSV(csvFile, ignoreRows = [], ignoreCols = []) {
+  
 }
+
+function createSlice(dataframe, columnindex, pattern, exportColumn){}
 
 module.exports = {
   fileExists,
@@ -121,5 +135,5 @@ module.exports = {
   flatten,
   loadCSV,
   calculateMedian,
-  //createSlice,
+  createSlice,
 };
