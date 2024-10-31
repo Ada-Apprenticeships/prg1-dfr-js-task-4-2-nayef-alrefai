@@ -84,7 +84,27 @@ function calculateMean(dataset) {
 }
 
 function calculateMedian(dataset) {
+  if (dataset !== dataset || typeof dataset.length !== 'number'){
+    return 0;
+  }
 
+  const validNumbers = [];
+  for (let i = 0; i < dataset.length; i++) {
+    const numValue = Number(dataset[i]);
+
+    if (!isNaN(numValue)) {
+      validNumbers[validNumbers.length] = numValue;
+    }
+  }
+
+  if (validNumbers.length === 0) {
+    return 0;
+  }
+  validNumbers.sort((a, b) => a - b);
+
+  const middle = validNumbers.length / 2;
+  
+  return validNumbers.length % 2 !== 0 ? validNumbers[(validNumbers.length -1) / 2]: (validNumbers[middle - 1] + validNumbers[middle])/2;
 }
 
 function convertToNumber(dataframe, col) {
